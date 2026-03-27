@@ -1,0 +1,231 @@
+# Ontology Schema
+
+**Version:** 1.0  
+**Created:** 2026-03-13
+
+---
+
+## Core Types
+
+```yaml
+types:
+  # People & Organizations
+  Person:
+    required: [name]
+    properties:
+      name: string
+      email: string?
+      phone: string?
+      notes: string?
+      tags: string[]?
+
+  Organization:
+    required: [name]
+    properties:
+      name: string
+      type: enum(company, team, community, government, other)?
+      members: ref(Person)[]?
+
+  # Work
+  Project:
+    required: [name]
+    properties:
+      name: string
+      description: string?
+      status: enum(planning, active, paused, completed, archived)
+      owner: ref(Person)?
+      tags: string[]?
+
+  Task:
+    required: [title, status]
+    properties:
+      title: string
+      description: string?
+      status: enum(open, in_progress, blocked, done, cancelled)
+      priority: enum(low, medium, high, urgent)?
+      assignee: ref(Person)?
+      project: ref(Project)?
+      due: datetime?
+      blockers: ref(Task)[]?
+
+  Goal:
+    required: [description]
+    properties:
+      description: string
+      target_date: date?
+      status: enum(active, achieved, abandoned)?
+      metrics: object[]?
+
+  # Time & Place
+  Event:
+    required: [title, start]
+    properties:
+      title: string
+      description: string?
+      start: datetime
+      end: datetime?
+      location: ref(Location)?
+      attendees: ref(Person)[]?
+      recurrence: object?
+
+  Location:
+    required: [name]
+    properties:
+      name: string
+      address: string?
+      city: string?
+      country: string?
+      coordinates: object?
+
+  # Information
+  Document:
+    required: [title]
+    properties:
+      title: string
+      path: string?
+      url: url?
+      summary: string?
+      tags: string[]?
+
+  Note:
+    required: [content]
+    properties:
+      content: string
+      title: string?
+      tags: string[]?
+      refs: ref(Entity)[]?
+
+  # Resources
+  Account:
+    required: [service, username]
+    properties:
+      service: string
+      username: string
+      url: url?
+      credential_ref: ref(Credential)?
+
+  Device:
+    required: [name, type]
+    properties:
+      name: string
+      type: enum(computer, phone, tablet, server, iot, other)
+      os: string?
+      owner: ref(Person)?
+
+  Credential:
+    required: [service, secret_ref]
+    forbidden_properties: [password, secret, token, key, api_key]
+    properties:
+      service: string
+      secret_ref: string  # Reference to external secret store
+      expires: datetime?
+
+  # Meta
+  Action:
+    required: [type, target, timestamp]
+    properties:
+      type: string
+      target: ref(Entity)
+      timestamp: datetime
+      actor: ref(Person|Agent)?
+      outcome: enum(success, failure, pending)?
+
+relations:
+  # Ownership
+  owns:
+    from_types: [Person, Organization]
+    to_types: [Account, Device, Document, Project]
+    cardinality: one_to_many
+
+  has_owner:
+    from_types: [Project, Task, Document]
+    to_types: [Person]
+    cardinality: many_to_one
+
+  # Work Hierarchy
+  has_task:
+    from_types: [Project]
+    to_types: [Task]
+    cardinality: one_to_many
+
+  has_goal:
+    from_types: [Project]
+    to_types: [Goal]
+    cardinality: one_to_many
+
+  assigned_to:
+    from_types: [Task]
+    to_types: [Person]
+    cardinality: many_to_one
+
+  # Dependencies
+  blocks:
+    from_types: [Task]
+    to_types: [Task]
+    acyclic: true
+    cardinality: many_to_many
+
+  depends_on:
+    from_types: [Task, Project]
+    to_types: [Task, Project, Event]
+    acyclic: true
+
+  # Membership
+  member_of:
+    from_types: [Person]
+    to_types: [Organization]
+    cardinality: many_to_many
+
+  part_of:
+    from_types: [Task, Document, Event]
+    to_types: [Project]
+    cardinality: many_to_one
+
+  # Events
+  attendee_of:
+    from_types: [Person]
+    to_types: [Event]
+    cardinality: many_to_many
+    properties:
+      status: enum(accepted, declined, tentative, pending)
+
+  located_at:
+    from_types: [Event, Person, Device]
+    to_types: [Location]
+    cardinality: many_to_one
+
+  # References
+  mentions:
+    from_types: [Document, Note]
+    to_types: [Person, Project, Task, Event]
+    cardinality: many_to_many
+
+  references:
+    from_types: [Document, Note]
+    to_types: [Document, Note]
+    cardinality: many_to_many
+
+constraints:
+  # Credentials must never store secrets directly
+  - type: Credential
+    rule: "forbidden_properties: [password, secret, token]"
+    message: "Credentials must use secret_ref to reference external secret storage"
+
+  # Event end must be >= start
+  - type: Event
+    rule: "if end exists: end >= start"
+    message: "Event end time must be after start time"
+
+  # No circular task dependencies
+  - relation: blocks
+    rule: "acyclic"
+    message: "Circular task dependencies are not allowed"
+```
+
+---
+
+## Notes
+
+- **Append-only:** Always append to graph.jsonl, never overwrite
+- **Validation:** Run `python3 scripts/ontology.py validate` to check constraints
+- **Backup:** Commit graph.jsonl to git regularly

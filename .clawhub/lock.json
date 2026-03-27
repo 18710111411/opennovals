@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "skills": {
+    "searxng": {
+      "version": "1.0.3",
+      "installedAt": 1772692921716
+    },
+    "find-skills": {
+      "version": "0.1.0",
+      "installedAt": 1772701207406
+    },
+    "skill-vetter": {
+      "version": "1.0.0",
+      "installedAt": 1772701213428
+    },
+    "agent-browser": {
+      "version": "0.2.0",
+      "installedAt": 1772701268218
+    },
+    "self-improving-agent": {
+      "version": "1.0.11",
+      "installedAt": 1772701278822
+    },
+    "proactive-agent": {
+      "version": "3.1.0",
+      "installedAt": 1772701443637
+    },
+    "openclaw-tavily-search": {
+      "version": "0.1.0",
+      "installedAt": 1773412737218
+    },
+    "ontology": {
+      "version": "1.0.4",
+      "installedAt": 1773413785733
+    },
+    "runesleo-systematic-debugging": {
+      "version": "3.0.0",
+      "installedAt": 1773417145241
+    },
+    "git-essentials": {
+      "version": "1.0.0",
+      "installedAt": 1773432091360
+    },
+    "weather": {
+      "version": "1.0.0",
+      "installedAt": 1773432130258
+    },
+    "calendar": {
+      "version": "1.0.0",
+      "installedAt": 1773432192710
+    },
+    "security-auditor": {
+      "version": "1.0.0",
+      "installedAt": 1773432194169
+    },
+    "memory-hygiene": {
+      "version": "1.0.0",
+      "installedAt": 1773432195445
+    }
+  }
+}

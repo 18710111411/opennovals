@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw Games - 游戏与小说创作</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { text-align: center; color: white; padding: 60px 20px; }
+        header h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        header p { font-size: 1.2em; opacity: 0.9; }
+        .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+        .project-card {
+            background: white; border-radius: 15px; padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: transform 0.3s ease;
+        }
+        .project-card:hover { transform: translateY(-5px); }
+        .project-card h2 { color: #667eea; margin-bottom: 15px; font-size: 1.8em; }
+        .status { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; margin-bottom: 15px; background: #fef3c7; color: #92400e; }
+        .project-card p { color: #666; margin-bottom: 20px; }
+        .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 2px solid #f0f0f0; }
+        .stat { text-align: center; }
+        .stat-value { font-size: 1.5em; font-weight: bold; color: #667eea; }
+        .stat-label { font-size: 0.85em; color: #999; }
+        .links { text-align: center; margin-top: 60px; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; color: white; }
+        .links a { color: white; text-decoration: none; margin: 0 15px; padding: 10px 20px; border: 2px solid white; border-radius: 25px; transition: all 0.3s ease; }
+        .links a:hover { background: white; color: #667eea; }
+        footer { text-align: center; color: white; margin-top: 60px; padding: 20px; opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 OpenClaw Games</h1>
+            <p>游戏开发 × 小说创作</p>
+        </header>
+        <div class="projects">
+            <div class="project-card">
+                <h2>🧟 末日防线</h2>
+                <span class="status">策划完成</span>
+                <p>丧尸末日生存塔防游戏 - 建造防御塔，指挥英雄，在丧尸潮中生存！</p>
+                <ul style="margin: 10px 0 10px 20px; color: #666;">
+                    <li>塔防 + 探索双模式</li>
+                    <li>动态任务系统</li>
+                    <li>12 种防御塔 + 13 种丧尸</li>
+                    <li>双结局设定</li>
+                </ul>
+                <div class="stats">
+                    <div class="stat"><div class="stat-value">55K</div><div class="stat-label">文档字数</div></div>
+                    <div class="stat"><div class="stat-value">100%</div><div class="stat-label">策划完成</div></div>
+                </div>
+            </div>
+            <div class="project-card">
+                <h2>⚡ 青云宗</h2>
+                <span class="status">连载中</span>
+                <p>玄幻修仙小说 - 李凡穿越修仙世界，觉醒双倍返利系统。</p>
+                <ul style="margin: 10px 0 10px 20px; color: #666;">
+                    <li>双倍返利系统</li>
+                    <li>功法优化机制</li>
+                    <li>寿元危机</li>
+                    <li>任务堂执事目标</li>
+                </ul>
+                <div class="stats">
+                    <div class="stat"><div class="stat-value">42</div><div class="stat-label">已写章节</div></div>
+                    <div class="stat"><div class="stat-value">35K</div><div class="stat-label">总字数</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="links">
+            <h3 style="margin-bottom: 20px;">快速链接</h3>
+            <a href="last-stand/README.md" target="_blank">🎮 游戏设定</a>
+            <a href="NOVEL-INDEX.md" target="_blank">📚 小说索引 (43 章)</a>
+            <a href="https://github.com/18710111411/openclaw-games" target="_blank">💻 GitHub</a>
+        </div>
+        <footer><p>© 2026 OpenClaw Games | MIT License</p></footer>
+    </div>
+</body>
+</html>

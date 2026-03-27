@@ -1,0 +1,38 @@
+# Ontology Graph — Initial State
+
+**Created:** 2026-03-13T23:11:00+08:00  
+**Status:** EMPTY (ready for first entities)
+
+---
+
+## Usage
+
+Append entities as JSONL:
+```jsonl
+{"op":"create","entity":{"id":"p_001","type":"Person","properties":{"name":"Alice"}}}
+{"op":"create","entity":{"id":"proj_001","type":"Project","properties":{"name":"Website Redesign","status":"active"}}}
+{"op":"relate","from":"proj_001","rel":"has_owner","to":"p_001"}
+```
+
+## Query Examples
+
+```bash
+# List all entities of a type
+python3 ~/.openclaw/workspace/skills/ontology/scripts/ontology.py list --type Person
+
+# Create entity
+python3 .../ontology.py create --type Person --props '{"name":"Alice"}'
+
+# Query with filter
+python3 .../ontology.py query --type Task --where '{"status":"open"}'
+
+# Get related entities
+python3 .../ontology.py related --id proj_001 --rel has_task
+```
+
+---
+
+## Graph Data (JSONL)
+
+<!-- Append new entries below -->
+

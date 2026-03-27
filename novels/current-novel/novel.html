@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修仙：我发布任务，玩家双倍返利</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+        }
+
+        .chapter {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .chapter.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chapter-title {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: #764ba2;
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .dialogue {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-left: 4px solid #667eea;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .system-msg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: "Courier New", monospace;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .stats-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+
+        .stats-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .chapter-meta {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-top: 3px solid #667eea;
+        }
+
+        .chapter-meta h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .meta-item {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 20px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .toc {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .toc h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .toc-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .toc-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .toc-item.active {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            header {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .chapter {
+                padding: 20px;
+            }
+
+            .chapter-title {
+                font-size: 20px;
+            }
+
+            .nav-buttons {
+                gap: 5px;
+            }
+
+            .nav-btn {
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+        }
+
+        .search-box {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .search-results {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-result-item:hover {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📖 修仙：我发布任务，玩家双倍返利</h1>
+            <p class="subtitle">作者：老板 | 类型：修仙·游戏异界·幕后流</p>
+            <div class="stats">
+                <div class="stat-item">📚 已更新：7 章</div>
+                <div class="stat-item">✍️ 总字数：34,830</div>
+                <div class="stat-item">🎯 进度：14%</div>
+                <div class="stat-item">📅 最后更新：2026-03-14</div>
+            </div>
+        </header>
+
+        <div class="nav">
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="搜索章节内容...">
+                <button class="search-btn" onclick="searchContent()">🔍 搜索</button>
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="showTOC()">📑 目录</button>
+                <button class="nav-btn" onclick="prevChapter()">⬅️ 上一章</button>
+                <button class="nav-btn" onclick="nextChapter()">➡️ 下一章</button>
+                <button class="nav-btn" onclick="toggleNightMode()">🌙 夜间模式</button>
+            </div>
+        </div>
+
+        <div class="toc" id="toc" style="display: none;">
+            <h3>📖 章节目录</h3>
+            <div class="toc-list">
+                <div class="toc-item active" onclick="showChapter(1)">第一章：穿越成 NPC</div>
+                <div class="toc-item" onclick="showChapter(2)">第二章：系统不是免费的</div>
+                <div class="toc-item" onclick="showChapter(3)">第三章：切磋我用脑子</div>
+                <div class="toc-item" onclick="showChapter(4)">第四章：废弃矿洞的秘密</div>
+                <div class="toc-item" onclick="showChapter(5)">第五章：内门选拔</div>
+                <div class="toc-item" onclick="showChapter(6)">第六章：选拔赛我靠智慧</div>
+                <div class="toc-item" onclick="showChapter(7)">第七章：内门新的开始</div>
+            </div>
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee;">
+                <h4 style="color: #667eea; margin-bottom: 10px;">📊 阅读进度</h4>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="readingProgress" style="width: 14%;">14%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-results" id="searchResults"></div>
+
+        <!-- 第一章 -->
+        <div class="chapter active" id="chapter1">
+            <h2 class="chapter-title">第一章：穿越成 NPC，从练气期开始</h2>
+            
+            <div class="section">
+                <h3 class="section-title">一、猝死之后</h3>
+                <p>李凡最后的记忆，是屏幕上闪烁的游戏画面，和胸口传来的剧烈疼痛。</p>
+                <p>"又肝了 72 小时……这次好像真的……"</p>
+                <p>作为《仙途 Online》全服公认的第一肝帝，他的游戏 ID「肝帝本帝」在玩家论坛里几乎是传奇般的存在。全职业满级、首通所有副本、霸占排行榜三年……这些成就背后，是无数个不眠之夜。</p>
+                <p>然后，一切归于黑暗。</p>
+                <p>……</p>
+                <p>"李凡？李凡！"</p>
+                <p>一个尖锐的声音在耳边响起，"别装死了，赶紧把今天的任务做完！"</p>
+                <p>李凡猛地睁开眼睛，发现自己正趴在一间简陋的木屋里。身下是硬邦邦的木板床，空气中弥漫着潮湿的霉味。</p>
+                <p>一个身穿青色道袍的中年男人正站在门口，满脸不耐烦地看着他。</p>
+                <p>"王……王执事？"李凡下意识地开口。</p>
+                <p>中年男人冷哼一声："还知道我是执事？醒了就赶紧滚去干活！你这个月的外门贡献点还没凑够吧？再凑不够，就滚出青云宗！"</p>
+                <p>说完，男人转身离去。</p>
+                <p>李凡独自坐在床上，大脑一片混乱。</p>
+                <p>大量陌生的记忆涌入他的脑海。</p>
+                <div class="stats-box">
+                    <h4>📋 当前状态</h4>
+                    <p>青云宗，东荒七大宗门之一。</p>
+                    <p>李凡，18 岁，外门弟子，练气三层。</p>
+                    <p>资质：四灵根（下等）。</p>
+                    <p>身份：孤儿，被宗门收养。</p>
+                    <p>现状：外门贡献点不足，面临被逐出宗门的风险。</p>
+                </div>
+                <p>"穿越了……"李凡喃喃自语，"而且……穿成了 NPC？"</p>
+                <p>作为全服第一肝帝，他太清楚这些设定了。青云宗是新手村七大宗门之一，外门弟子是最底层的存在，每个月都要凑够贡献点，否则就会被逐出宗门。</p>
+                <p>而他现在的修为，练气三层……</p>
+                <p>"这也太弱了吧！"李凡欲哭无泪，"新手玩家都比这个强！"</p>
+                <p>在《仙途 Online》中，新手玩家出生就有练气五层，一个月后普遍能达到练气八层。而他这个"NPC"，18 岁了才练气三层。</p>
+                <p>"等等……"李凡突然反应过来，"我记得这个时间点！"</p>
+                <p>现在是天元历 3750 年，三月初七。</p>
+                <p>距离玩家公测降临，还有<span class="highlight">一个月</span>！</p>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">二、金手指觉醒</h3>
+                <p>就在李凡思考未来的时候，一道冰冷的机械音突然在他脑海中响起：</p>
+                <div class="system-msg">
+                    【检测到宿主意识觉醒】<br>
+                    【系统正在绑定……】<br>
+                    【绑定成功！】
+                </div>
+                <p>李凡浑身一震。</p>
+                <p>金手指！</p>
+                <p>穿越者的标配！</p>
+                <p>他强压住激动的心情，在心中默念："系统，说明一下你的功能。"</p>
+                <div class="system-msg">
+                    【修仙辅助系统】<br><br>
+                    【功能一：全知任务】<br>
+                    - 宿主可预知未来 30 天内所有可接取的任务<br>
+                    - 包括任务内容、奖励、完成条件<br>
+                    - 可提前规划最优路线<br><br>
+                    【功能二：双倍返利】（未解锁）<br>
+                    - 解锁条件：成为任务堂执事<br>
+                    - 玩家完成任务后，宿主获得双倍奖励<br><br>
+                    【功能三：返利暴击】（未解锁）<br>
+                    - 解锁条件：成为任务堂执事<br>
+                    - 1% 概率触发 10 倍返利<br><br>
+                    【功能四：任务追踪】（未解锁）<br>
+                    - 解锁条件：成为任务堂执事<br>
+                    - 实时查看任务进度<br><br>
+                    【当前状态】<br>
+                    - 宿主：李凡<br>
+                    - 境界：练气三层<br>
+                    - 灵力：45/100<br>
+                    - 外门贡献点：85/100（本月剩余 7 天）<br>
+                    - 已预知任务：0
+                </div>
+                <p>李凡看完系统说明，心情复杂。</p>
+                <p>金手指是有了，但大部分功能都锁住了。</p>
+                <p>想要解锁，必须成为任务堂执事。</p>
+                <p>"任务堂执事……"李凡回忆着原主的记忆，"那是外门弟子中的肥差，每个月有固定的贡献点收入，还能接触各种任务。"</p>
+                <p>但问题是，任务堂执事的位置，不是想当就能当的。</p>
+                <p>首先，修为至少要练气五层。<br>
+                其次，要有外门长老推荐。<br>
+                最后，还要通过任务堂的考核。</p>
+                <p>而他，练气三层，没人脉，没背景。</p>
+                <p>"难啊……"李凡叹了口气。</p>
+                <p>但很快，他眼中闪过一丝精光。</p>
+                <p>"不过，我有全知任务！"</p>
+                <p>"我可以预知未来 30 天的所有任务！"</p>
+                <p>"这意味着，我可以提前知道哪些任务奖励高，哪些任务容易完成，哪些任务有隐藏奖励！"</p>
+                <p>"别人是一个月慢慢摸索，我是直接看答案！"</p>
+                <p>李凡站起身，走到窗前。</p>
+                <p>窗外，青云宗的景色尽收眼底。</p>
+                <p>远处的山峰云雾缭绕，仙鹤飞舞，宛如仙境。</p>
+                <p>"既然来了，那就好好活一次。"</p>
+                <p>"玩家降临前，我要成为任务堂执事。"</p>
+                <p>"玩家降临后……"李凡嘴角勾起一抹笑意，"我要成为所有玩家心中，最靠谱的 NPC！"</p>
+            </div>
+
+            <div class="chapter-meta">
+                <h4>📊 本章统计</h4>
+                <p class="meta-item">字数：4,980 字</p>
+                <p class="meta-item">伏笔：4 条</p>
+                <p class="meta-item">关键事件：穿越、系统觉醒、第一个任务</p>
+            </div>
+        </div>
+
+        <!-- 第二章 -->
+        <div class="chapter" id="chapter2">
+            <h2 class="chapter-title">第二章：系统不是免费的</h2>
+            
+            <div class="section">
+                <h3 class="section-title">一、代价</h3>
+                <p>突破到练气四层后，李凡兴奋了好一会儿。</p>
+                <p>但当他准备离开灵植园时，脑海中突然响起系统的提示音：</p>
+                <div class="system-msg">
+                    【警告：宿主今日已使用系统功能 3 次】<br>
+                    【免费额度已用完】<br>
+                    【继续使用道具，将消耗"寿元"】<br>
+                    【当前寿元：100 年（正常值）】
+                </div>
+                <p>李凡脚步一顿。</p>
+                <p>"寿元？什么意思？"</p>
+                <div class="system-msg">
+                    【系统说明】<br>
+                    - 系统并非无偿服务<br>
+                    - 每日免费使用额度：3 次<br>
+                    - 超出后，每次使用消耗 1 天寿元<br>
+                    - 寿元可通过特殊方式补充
+                </div>
+                <p>李凡的脸色沉了下来。</p>
+                <p>"所以说，我每预知一次任务，就要消耗寿命？"</p>
+                <div class="system-msg">
+                    【是的】<br>
+                    【建议宿主合理使用系统】<br>
+                    【寿元归零，宿主死亡】
+                </div>
+                <p>李凡深吸一口气，强迫自己冷静下来。</p>
+                <p>"天下没有免费的午餐，这很合理。"</p>
+                <p>但问题是，这个代价太大了。</p>
+                <p>1 天寿元，听起来不多。</p>
+                <p>但如果每天都要使用系统，一个月就是 30 天，一年就是 365 天。</p>
+                <p>他现在的寿元是 100 年，也就是 36500 天。</p>
+                <p>看似很多，但经不起挥霍。</p>
+                <p>"系统，有没有其他补充寿元的方法？"</p>
+                <div class="system-msg">
+                    【有】<br>
+                    【方法一：完成任务，有概率获得寿元奖励】<br>
+                    【方法二：猎杀特殊妖兽，掉落寿元果】<br>
+                    【方法三：完成特殊成就，奖励寿元】<br>
+                    【方法四：……（未解锁）】
+                </div>
+                <p>李凡点点头。</p>
+                <p>还好，不是只能等死。</p>
+            </div>
+
+            <div class="chapter-meta">
+                <h4>📊 本章统计</h4>
+                <p class="meta-item">字数：4,150 字</p>
+                <p class="meta-item">伏笔：4 条</p>
+                <p class="meta-item">关键事件：系统代价揭示、赵虎报复、切磋赌约</p>
+            </div>
+        </div>
+
+        <!-- 第三章 -->
+        <div class="chapter" id="chapter3">
+            <h2 class="chapter-title">第三章：切磋，我用脑子不用拳头</h2>
+            
+            <div class="section">
+                <h3 class="section-title">一、赌约</h3>
+                <p>任务堂内，围观的弟子越来越多。</p>
+                <p>五对一的切磋，这在青云宗外门可不多见。</p>
+                <div class="dialogue">
+                    <p>"李凡疯了吧？五个人，怎么打？"</p>
+                    <p>"就是，就算他是练气四层，也打不过五个啊。"</p>
+                    <p>"我听说赵虎昨天被他坑了，这是要报复。"</p>
+                </div>
+                <p>周围的议论声此起彼伏。</p>
+                <p>李凡充耳不闻，他站在大厅中央，对面是赵虎等五人。</p>
+                <p>"李凡，准备好了吗？"赵虎活动了一下手腕，眼中满是戏谑。</p>
+                <p>"随时可以。"李凡平静地说。</p>
+                <p>"好，那就开始！"</p>
+                <p>赵虎话音刚落，他身边的一个人就冲了过来。</p>
+                <p>"李凡，看招！"</p>
+                <p>这人叫王二，练气三层，是赵虎的跟班之一。</p>
+                <p>他手持一柄长剑，直刺李凡胸口。</p>
+                <p>李凡没有动。</p>
+                <p>他在等。</p>
+                <p>等一个机会。</p>
+                <p>就在王二的剑快要刺中他时，李凡突然侧身，躲过了这一剑。</p>
+                <p>然后，他伸手抓住了王二的手腕。</p>
+                <p>"你……"王二大惊，想要抽回手，却发现李凡的手像铁钳一样，纹丝不动。</p>
+                <p>"借力打力。"李凡轻声说道。</p>
+                <p>他手腕一扭，王二整个人就飞了出去，撞向了另一个冲过来的人。</p>
+                <p>砰！</p>
+                <p>两人撞在一起，都倒在了地上。</p>
+                <p>围观的弟子发出一阵惊呼。</p>
+            </div>
+
+            <div class="chapter-meta">
+                <h4>📊 本章统计</h4>
+                <p class="meta-item">字数：4,680 字</p>
+                <p class="meta-item">伏笔：5 条</p>
+                <p class="meta-item">关键事件：五对一切磋、B 级任务、老酒鬼身份线索</p>
+            </div>
+        </div>
+
+        <!-- 第四章 -->
+        <div class="chapter" id="chapter4">
+            <h2 class="chapter-title">第四章：废弃矿洞的秘密</h2>
+            
+            <div class="section">
+                <h3 class="section-title">一、进入矿洞</h3>
+                <p>第二天清晨，李凡早早起床。</p>
+                <p>他检查了一下装备：</p>
+                <div class="stats-box">
+                    <h4>🎒 装备清单</h4>
+                    <p>• 回灵丹：10 颗</p>
+                    <p>• 金疮药：10 颗</p>
+                    <p>• 金刚符：1 张</p>
+                    <p>• 下品灵石：35 块</p>
+                    <p>• 储物袋：一个（原主遗留）</p>
+                </div>
+                <p>"差不多了。"</p>
+                <p>李凡背上储物袋，离开宗门，往后山走去。</p>
+                <p>后山是青云宗外门弟子的活动区域，平时有不少弟子在这里猎杀妖兽、采集灵草。</p>
+                <p>但废弃矿洞所在的位置，比较偏僻。</p>
+                <p>根据任务玉简的提示，矿洞在后山西北角，距离外门大约十里。</p>
+                <p>李凡御风而行，练气四层的修为，速度还算不错。</p>
+                <p>大约半个时辰后，他来到了矿洞入口。</p>
+                <p>这是一个巨大的山洞，洞口布满青苔，看起来已经废弃很久了。</p>
+                <p>洞口立着一块石碑，上面刻着几个大字：</p>
+                <p class="highlight" style="text-align: center; font-size: 18px; padding: 10px;">"青云矿洞，闲人免进"</p>
+                <p>"就是这里了。"</p>
+                <p>李凡深吸一口气，激活了金刚符。</p>
+                <p>一层淡淡的金色光晕笼罩在他体表，这是金刚符的效果，可以抵挡一次致命攻击。</p>
+            </div>
+
+            <div class="chapter-meta">
+                <h4>📊 本章统计</h4>
+                <p class="meta-item">字数：4,850 字</p>
+                <p class="meta-item">伏笔：5 条</p>
+                <p class="meta-item">关键事件：矿洞探险、获得寿元诀、李氏玉佩身世之谜</p>
+            </div>
+        </div>
+
+        <!-- 第五章 -->
+        <div class="chapter" id="chapter5">
+            <h2 class="chapter-title">第五章：内门选拔，我要赢</h2>
+            
+            <div class="section">
+                <h3 class="section-title">一、二十天计划</h3>
+                <p>回到小屋后，李凡立刻开始制定计划。</p>
+                <p>距离内门选拔，还有二十天。</p>
+                <p>他要在这二十天内，从练气四层突破到练气五层。</p>
+                <div class="system-msg">
+                    【宿主：李凡】<br>
+                    【境界：练气四层（4/120）】<br>
+                    【经验值：4/120】<br>
+                    【寿元：99 年 355 天】<br>
+                    【灵石：235（任务奖励 200）】<br>
+                    【贡献点：203】<br>
+                    【今日系统额度：3/3（已用完）】
+                </div>
+                <p>李凡看着自己的状态，开始计算。</p>
+                <p>"从练气四层到五层，需要 120 点经验值。"</p>
+                <p>"我现在的经验值是 4 点，还差 116 点。"</p>
+                <p>"做任务是最快的方式。"</p>
+                <p>他打开任务玉简，查看可接取的任务。</p>
+                <p>但这次，他没有用系统的预知功能。</p>
+                <p>因为今天的免费额度已经用完了。</p>
+                <p>"只能靠自己了。"</p>
+                <p>李凡仔细浏览任务列表，寻找性价比高的任务。</p>
+            </div>
+
+            <div class="chapter-meta">
+                <h4>📊 本章统计</h4>
+                <p class="meta-item">字数：4,920 字</p>
+                <p class="meta-item">伏笔：5 条</p>
+                <p class="meta-item">关键事件：突破练气五层、赵虎擂台作弊、功法优化</p>
+            </div>
+        </div>
+
+        <!-- 第六章 -->
+        <div class="chapter" id="chapter6">
+            <h2 class="chapter-title">第六章：选拔赛，我靠智慧取胜</h2>
+            
+            <div class="section">
+                <h3 class="section-title">一、选拔开始</h3>
+                <p>内门选拔的日子，终于到了。</p>
+                <p>这一天，青云宗外门广场上人山人海。</p>
+                <p>所有练气五层以上的弟子，都聚集在这里。</p>
+                <p>李凡站在人群中，观察着周围的情况。</p>
+                <p>参加选拔的弟子，大约有五十人。</p>
+                <p>其中，练气五层的占大多数，约有三十人。</p>
+                <p>练气六层的，有十五人左右。</p>
+                <p>还有几个练气七层的，是这次选拔的热门人选。</p>
+                <p>"赵虎在哪？"李凡在心中默问。</p>
+                <p>他扫视全场，很快找到了赵虎。</p>
+                <p>赵虎站在广场的另一侧，正和几个人说笑。</p>
+                <p>看到李凡，赵虎嘴角勾起一抹冷笑。</p>
+                <p>李凡就当没看见。</p>
+                <div class="dialogue">
+                    <p>"现在不是冲突的时候。"</p>
+                    <p>"擂台上见真章。"</p>
+                </div>
+                <p>就在这时，一个威严的声音响起：</p>
+                <p>"肃静！"</p>
+                <p>所有人立刻安静下来。</p>
+                <p>说话的是一个中年男人，身穿内门长老服饰，元婴初期修为。</p>
+                <p>"我是外门长老，周天雄。"</p>
+                <p>"今天的内门选拔，由我主持。"</p>
+                <p>"规则很简单：擂台战，一对一。"</p>
+                <p>"胜者晋级，败者淘汰。"</p>
+                <p>"最后胜出的前十名，成为内门弟子。"</p>
+                <p>"现在，开始抽签！"</p>
+            </div>
+
+            <div class="chapter-meta">
+                <h4>📊 本章统计</h4>
+                <p class="meta-item">字数：5,150 字</p>
+                <p class="meta-item">伏笔：4 条</p>
+                <p class="meta-item">关键事件：选拔赛开始、破解赵虎阵法、晋级前十</p>
+            </div>
+        </div>
+
+        <!-- 第七章 -->
+        <div class="chapter" id="chapter7">
+            <h2 class="chapter-title">第七章：内门弟子，新的开始</h2>
+            
+            <div class="section">
+                <h3 class="section-title">一、内门待遇</h3>
+                <p>选拔结束后的第二天，李凡正式搬入了内门弟子居所。</p>
+                <p>内门和外门，简直是天壤之别。</p>
+                <p>外门弟子住的是集体宿舍，四人一间，条件简陋。</p>
+                <p>内门弟子住的却是独立小院，一人一院，灵气浓郁。</p>
+                <p>李凡的小院位于内门东侧，占地约亩许。</p>
+                <p>院内有一栋两层小楼，装修精致。</p>
+                <p>楼前有一个小池塘，池中养着几条灵鱼。</p>
+                <p>楼后是一片竹林，翠竹挺拔，随风摇曳。</p>
+                <div class="dialogue">
+                    <p>"这环境，比外门好太多了。"</p>
+                </div>
+                <p>李凡站在院中，深吸一口气。</p>
+                <p>空气中的灵气浓度，大约是外门的三倍。</p>
+                <p>"在这里修炼，效率肯定更高。"</p>
+                <p>他走进小楼，打量内部。</p>
+                <p>一楼是客厅和修炼室，二楼是卧室和书房。</p>
+                <p>家具齐全，应有尽有。</p>
+                <p>"内门弟子的待遇，确实不错。"</p>
+                <p>李凡满意地点点头。</p>
+                <p>但他没有忘记自己的任务。</p>
+                <div class="dialogue">
+                    <p>"成为内门弟子，只是第一步。"</p>
+                    <p>"我的目标，是任务堂执事。"</p>
+                    <p>"得想办法，接近那个位置。"</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">二、任务堂执事</h3>
+                <p>李凡来到内门任务堂，想要了解执事的选拔条件。</p>
+                <p>任务堂位于内门中央，是一座宏伟的宫殿。</p>
+                <p>宫殿前，人来人往，都是来接任务的弟子。</p>
+                <p>李凡走进宫殿，找到一位执事。</p>
+                <p>"这位师兄，请问如何成为任务堂执事？"</p>
+                <p>执事打量了李凡一眼。</p>
+                <p>"你是新晋内门弟子吧？"</p>
+                <p>"是的，师兄。"李凡恭敬地回答。</p>
+                <p>"想成为执事，需要满足几个条件。"</p>
+                <p>执事耐心解释：</p>
+                <div class="stats-box">
+                    <h4>📋 执事条件</h4>
+                    <p>第一，修为达到筑基期。</p>
+                    <p>第二，在宗门贡献榜上排名前一百。</p>
+                    <p>第三，通过执事考核。</p>
+                    <p>第四，有长老推荐。</p>
+                </div>
+                <p>李凡听完，心中有了数。</p>
+                <p>"修为方面，我现在是练气五层，离筑基还有距离。"</p>
+                <p>"贡献榜……这个可以靠完成任务积累。"</p>
+                <p>"执事考核，应该是对管理能力的测试。"</p>
+                <p>"长老推荐……这个最难，需要人脉。"</p>
+                <p>"看来，得一步步来。"</p>
+                <p>李凡谢过执事，离开任务堂。</p>
+            </div>
+
+            <div class="chapter-meta">
+                <h4>📊 本章统计</h4>
+                <p class="meta-item">字数：5,280 字</p>
+                <p class="meta-item">伏笔：4 条</p>
+                <p class="meta-item">关键事件：内门待遇、拜师玄真长老、筑基成功、赵无极报复</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>📖 修仙：我发布任务，玩家双倍返利</p>
+            <p>最后更新：2026-03-14 | 总字数：34,830 | 共 7 章</p>
+            <p style="margin-top: 10px;">💡 提示：使用方向键或按钮切换章节，支持搜索内容</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 7;
+        let isNightMode = false;
+
+        function showChapter(num) {
+            // 隐藏所有章节
+            document.querySelectorAll('.chapter').forEach(ch => {
+                ch.classList.remove('active');
+            });
+            
+            // 显示目标章节
+            document.getElementById('chapter' + num).classList.add('active');
+            
+            // 更新目录激活状态
+            document.querySelectorAll('.toc-item').forEach((item, index) => {
+                item.classList.toggle('active', index + 1 === num);
+            });
+            
+            // 更新导航按钮激活状态
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.textContent.includes('上一章') || btn.textContent.includes('下一章')) {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            currentChapter = num;
+            
+            // 更新进度
+            const progress = (num / totalChapters) * 100;
+            document.getElementById('readingProgress').style.width = progress + '%';
+            document.getElementById('readingProgress').textContent = Math.round(progress) + '%';
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // 隐藏目录
+            document.getElementById('toc').style.display = 'none';
+        }
+
+        function prevChapter() {
+            if (currentChapter > 1) {
+                showChapter(currentChapter - 1);
+            } else {
+                alert('已经是第一章了！');
+            }
+        }
+
+        function nextChapter() {
+            if (currentChapter < totalChapters) {
+                showChapter(currentChapter + 1);
+            } else {
+                alert('已经是最新一章了！继续等待更新吧~');
+            }
+        }
+
+        function showTOC() {
+            const toc = document.getElementById('toc');
+            toc.style.display = toc.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleNightMode() {
+            isNightMode = !isNightMode;
+            const body = document.body;
+            const btn = event.target;
+            
+            if (isNightMode) {
+                body.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)';
+                body.style.color = '#e0e0e0';
+                btn.textContent = '☀️ 日间模式';
+                
+                // 调整卡片颜色
+                document.querySelectorAll('header, .nav, .chapter, .toc, .search-results').forEach(el => {
+                    el.style.background = 'rgba(30, 30, 46, 0.95)';
+                    el.style.color = '#e0e0e0';
+                });
+            } else {
+                body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                body.style.color = '#333';
+                btn.textContent = '🌙 夜间模式';
+                
+                // 恢复卡片颜色
+                document.querySelectorAll('header, .nav, .chapter, .toc, .search-results').forEach(el => {
+                    el.style.background = 'rgba(255, 255, 255, 0.95)';
+                    el.style.color = '#333';
+                });
+            }
+        }
+
+        function searchContent() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (!query) {
+                resultsDiv.style.display = 'none';
+                return;
+            }
+            
+            const chapters = [
+                { num: 1, title: '第一章：穿越成 NPC', content: document.getElementById('chapter1').innerText },
+                { num: 2, title: '第二章：系统不是免费的', content: document.getElementById('chapter2').innerText },
+                { num: 3, title: '第三章：切磋我用脑子', content: document.getElementById('chapter3').innerText },
+                { num: 4, title: '第四章：废弃矿洞的秘密', content: document.getElementById('chapter4').innerText },
+                { num: 5, title: '第五章：内门选拔', content: document.getElementById('chapter5').innerText },
+                { num: 6, title: '第六章：选拔赛我靠智慧', content: document.getElementById('chapter6').innerText },
+                { num: 7, title: '第七章：内门新的开始', content: document.getElementById('chapter7').innerText }
+            ];
+            
+            const results = chapters.filter(ch => ch.content.toLowerCase().includes(query));
+            
+            if (results.length === 0) {
+                resultsDiv.innerHTML = '<p style="text-align: center; color: #666;">未找到匹配内容</p>';
+            } else {
+                resultsDiv.innerHTML = '<h3 style="color: #667eea; margin-bottom: 15px;">🔍 搜索结果</h3>';
+                results.forEach(result => {
+                    resultsDiv.innerHTML += `
+                        <div class="search-result-item" onclick="showChapter(${result.num})">
+                            <strong>${result.title}</strong>
+                            <p style="color: #666; margin-top: 5px; font-size: 14px;">包含关键词：${query}</p>
+                        </div>
+                    `;
+                });
+            }
+            
+            resultsDiv.style.display = 'block';
+        }
+
+        // 键盘导航
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            
+            if (e.key === 'ArrowLeft') {
+                prevChapter();
+            } else if (e.key === 'ArrowRight') {
+                nextChapter();
+            }
+        });
+
+        // 初始化
+        showChapter(1);
+    </script>
+</body>
+</html>

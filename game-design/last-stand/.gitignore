@@ -1,0 +1,52 @@
+# Unity + Game Development .gitignore
+
+# Unity generated
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+
+# Visual Studio
+.vs/
+*.csproj
+*.sln
+*.suo
+*.user
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Unity specific
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+sysinfo.txt
+*.apk
+*.aab
+*.unitypackage
+
+# Never ignore .gitignore
+!.gitignore
+
+# Documentation - keep markdown files
+!*.md
+
+# Data files - keep JSON configs
+!*.json
+
+# Keep Docs folder
+!Docs/
+!docs/
+
+# Keep GitHub config
+!.github/

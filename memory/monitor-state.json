@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-03-14T04:50:00+08:00",
+  "gateway": {
+    "status": "running",
+    "pid": 6007,
+    "state": "active",
+    "bind": "lan (0.0.0.0)",
+    "port": 15613,
+    "rpc_probe": "ok",
+    "dashboard": "http://172.19.46.252:15613/17a6f061/"
+  },
+  "memory": {
+    "total": "1.8Gi",
+    "used": "1.0Gi",
+    "free": "418Mi",
+    "available": "804Mi",
+    "swap_total": "2.0Gi",
+    "swap_used": "31Mi",
+    "swap_free": "2.0Gi",
+    "usage_percent": 55.6
+  },
+  "disk": {
+    "root": {
+      "filesystem": "/dev/vda3",
+      "size": "40G",
+      "used": "14G",
+      "available": "24G",
+      "usage_percent": 37
+    },
+    "boot": {
+      "filesystem": "/dev/vda2",
+      "size": "200M",
+      "used": "5.8M",
+      "available": "194M",
+      "usage_percent": 3
+    }
+  },
+  "sessions": {
+    "store_path": "/home/admin/.openclaw/agents/main/sessions/sessions.json",
+    "total_entries": 4,
+    "active_sessions": [
+      "agent:main:subagent:80083340-c74b-4578-a977-cbd737ddba5f",
+      "agent:main:main",
+      "agent:main:subagent:70efd764-331e-4843-ac68-4f2dfd07d8f5",
+      "agent:main:subagent:45b8beab-9152-4a2a-83c7-f29d7a66eeac"
+    ]
+  },
+  "channels": {
+    "qq_bot": "not configured",
+    "feishu": "ok",
+    "wecom": "not configured",
+    "dingtalk": "not configured"
+  },
+  "health_summary": "healthy"
+}
